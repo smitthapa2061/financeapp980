@@ -75,6 +75,46 @@ export default function DisplayBookings({
     }
   };
 
+  const getProfitForRange = (startDate, endDate) => {
+  let entryFee = 0;
+  let winning = 0;
+
+  teams.forEach((team) => {
+    team.bookings.forEach((booking) => {
+      const bookingDate = new Date(booking.date);
+      if (bookingDate >= startDate && bookingDate <= endDate) {
+        entryFee += booking.entryFee || 0;
+        winning += booking.winning || 0;
+      }
+    });
+  });
+
+  return entryFee - winning;
+};
+
+// Today
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const tomorrow = new Date(today);
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+// This week (last 7 days including today)
+const sevenDaysAgo = new Date();
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+sevenDaysAgo.setHours(0, 0, 0, 0);
+
+// This month (last 30 days including today)
+const oneMonthAgo = new Date();
+oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+oneMonthAgo.setHours(0, 0, 0, 0);
+
+// Calculate profits
+const todayProfit = getProfitForRange(today, tomorrow);
+const weekProfit = getProfitForRange(sevenDaysAgo, new Date());
+const monthProfit = getProfitForRange(oneMonthAgo, new Date());
+
+
+
   // Totals calculation (grand)
   const grandTotals = filteredTeams.reduce(
     (totals, team) => {
@@ -108,6 +148,8 @@ export default function DisplayBookings({
     <div className="mt-[100px]">
       <h2>Team Bookings Overview</h2>
 
+
+
       <input
         type="text"
         placeholder="Search teams by name..."
@@ -126,37 +168,7 @@ export default function DisplayBookings({
 
       {/* Grand Totals Summary */}
       {/* Distribution Summary */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          backgroundColor: "#fff3e0",
-          padding: "16px",
-          borderRadius: "6px",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-          marginBottom: "30px",
-          fontWeight: "bold",
-          fontSize: "16px",
-        }}
-      >
-        {[
-          { name: "BISHAL", percent: 45 },
-          { name: "SMIT", percent: 45},
-         
-          { name: "MASTER DAI", percent: 10 },
-        ].map(({ name, percent }) => {
-          const shareBase =
-            (grandTotals.entryFee || 0) - (grandTotals.winning || 0);
-
-          const share = shareBase * (percent / 100);
-
-          return (
-            <div key={name}>
-              {name}: Rs {Math.round(share)} ({percent}%)
-            </div>
-          );
-        })}
-      </div>
+     
 
       <div
         style={{
@@ -174,7 +186,10 @@ export default function DisplayBookings({
         >
           <span >Total Entry Fee: Rs {Math.round(grandTotals.entryFee)}</span>
           <span className="ml-[200px]">Total Winning: Rs {Math.round(grandTotals.winning)}</span>
-        
+         
+         <p><strong>Today's Profit:</strong> Rs {todayProfit}</p>
+  <p><strong>Last 7 Days Profit:</strong> Rs {weekProfit}</p>
+   <p><strong>30 Days Profit:</strong> Rs {monthProfit}</p>
         </div>
       </div>
 
