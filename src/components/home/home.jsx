@@ -27,7 +27,7 @@ export default function TeamSelector() {
   const fetchTeams = async () => {
     try {
       const res = await axios.get(
-        "https://solo-hisab-back-smit.onrender.com/api/bookingData"
+        "https://seven-hisab.onrender.com/api/bookingData"
       );
       setTeams(res.data);
     } catch {
@@ -54,7 +54,7 @@ export default function TeamSelector() {
   ) => {
     try {
       await axios.put(
-        `https://solo-hisab-back-smit.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`,
+        `https://seven-hisab.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`,
         updatedBooking
       );
       setMessage("Booking updated successfully");
@@ -69,7 +69,7 @@ export default function TeamSelector() {
       return;
     try {
       await axios.delete(
-        `https://solo-hisab-back-smit.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`
+        `https://seven-hisab.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`
       );
       setMessage("Booking deleted successfully");
       await fetchTeams();
@@ -88,7 +88,7 @@ export default function TeamSelector() {
 
     try {
       await axios.delete(
-        `https://solo-hisab-back-smit.onrender.com/api/bookingData/${teamName}`
+        `https://seven-hisab.onrender.com/api/bookingData/${teamName}`
       );
       setMessage(`Team "${teamName}" deleted successfully.`);
       await fetchTeams();
@@ -114,7 +114,7 @@ export default function TeamSelector() {
     }
     try {
       const res = await axios.post(
-        "https://solo-hisab-back-smit.onrender.com/api/bookingData",
+        "https://seven-hisab.onrender.com/api/bookingData",
         {
           teamName: newTeamName,
           bookings: [],
@@ -141,7 +141,7 @@ export default function TeamSelector() {
       await Promise.all(
         selectedTeams.map((teamName) =>
           axios.post(
-            `https://solo-hisab-back-smit.onrender.com/api/bookingData/${teamName}/bookings`,
+            `https://seven-hisab.onrender.com/api/bookingData/${teamName}/bookings`,
             booking
           )
         )
