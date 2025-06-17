@@ -252,7 +252,7 @@ export default function TeamSelector() {
                     <label>DATE</label>
                     <input
                       className="border-2 border-black w-full p-2"
-                      type="date"
+                      type="text"
                       name="date"
                       value={booking.date}
                       onChange={handleInputChange}
