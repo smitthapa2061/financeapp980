@@ -24,14 +24,28 @@ export default function DisplayBookings({
 
   if (!teams) return <p>Loading teams...</p>;
 
-const filteredTeams = teams.filter((team) => {
-  const lowerSearch = searchTerm.toLowerCase();
-  const matchTeamName = team.teamName?.toLowerCase().includes(lowerSearch);
-  const matchCaster = team.bookings?.some(
-    (b) => b.caster?.toLowerCase().includes(lowerSearch)
-  );
-  return matchTeamName || matchCaster;
-})
+const lowerSearch = searchTerm.toLowerCase().trim();
+
+const filteredTeams = teams
+  .map(team => {
+    const matchTeamName = team.teamName?.toLowerCase().includes(lowerSearch);
+
+    // Filter bookings that match caster or date
+    const filteredBookings = team.bookings?.filter(b => {
+      const matchCaster = b.caster?.toLowerCase().includes(lowerSearch);
+      const matchDate = b.date?.toLowerCase().includes(lowerSearch);
+      return matchCaster || matchDate;
+    }) || [];
+
+    // If team name matches, keep all bookings, else only filtered ones
+    if (matchTeamName) {
+      return { ...team };
+    } else if (filteredBookings.length > 0) {
+      return { ...team, bookings: filteredBookings };
+    }
+    return null; // no match
+  })
+  .filter(Boolean)
     .sort((a, b) => {
       const totalA = a.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
       const totalB = b.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
