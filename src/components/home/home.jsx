@@ -216,7 +216,7 @@ export default function TeamSelector() {
             <form className="relative left-[100px] ">
               {teams
                 .filter(({ teamName }) =>
-                  teamName.toLowerCase().includes(newTeamName.toLowerCase())
+                  teamName?.toLowerCase().includes(newTeamName.toLowerCase())
                 )
                 .map(({ teamName, _id }) => (
                   <div className="text-red-600 font-bold text-[2rem]" key={_id}>
