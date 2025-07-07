@@ -28,15 +28,15 @@ const lowerSearch = searchTerm.toLowerCase().trim();
 
 const filteredTeams = teams
   .map(team => {
-    const matchTeamName = team.teamName?.toLowerCase().trim() === lowerSearch;
+    const matchTeamName = team.teamName?.toLowerCase().trim().includes(lowerSearch);
 
     const matchedBookings = team.bookings?.filter(b => {
-      const matchDate = b.date?.toLowerCase().trim() === lowerSearch;
-      const matchCaster = b.caster?.toLowerCase().trim() === lowerSearch;
+      const matchDate = b.date?.toLowerCase().trim().includes(lowerSearch);
+      const matchCaster = b.caster?.toLowerCase().trim().includes(lowerSearch);
       return matchDate || matchCaster;
     }) || [];
 
-    const matchCaster = matchedBookings.some(b => b.caster?.toLowerCase().trim() === lowerSearch);
+    const matchCaster = matchedBookings.some(b => b.caster?.toLowerCase().trim().includes(lowerSearch));
 
     if (matchTeamName || matchCaster) {
       return {
@@ -54,6 +54,8 @@ const filteredTeams = teams
 
     return null;
   })
+
+
 
 
 
