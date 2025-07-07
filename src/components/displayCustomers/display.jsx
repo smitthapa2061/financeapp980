@@ -171,7 +171,7 @@ const monthProfit = getProfitForRange(oneMonthAgo, new Date());
 
       <input
         type="text"
-        placeholder="Search teams by name..."
+        placeholder="Search teams by name / DATE / BOOKED BY"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{
