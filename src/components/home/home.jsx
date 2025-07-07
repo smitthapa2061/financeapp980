@@ -27,7 +27,7 @@ export default function TeamSelector() {
   const fetchTeams = async () => {
     try {
       const res = await axios.get(
-        "https://backendhisab.onrender.com/api/bookingData"
+        "https://hisab-backend-hu8f.onrender.com/api/bookingData"
       );
       setTeams(res.data);
     } catch {
@@ -54,7 +54,7 @@ export default function TeamSelector() {
   ) => {
     try {
       await axios.put(
-        `https://backendhisab.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`,
+        `https://hisab-backend-hu8f.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`,
         updatedBooking
       );
       setMessage("Booking updated successfully");
@@ -69,7 +69,7 @@ export default function TeamSelector() {
       return;
     try {
       await axios.delete(
-        `https://backendhisab.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`
+        `https://hisab-backend-hu8f.onrender.com/api/bookingData/${teamName}/bookings/${bookingIndex}`
       );
       setMessage("Booking deleted successfully");
       await fetchTeams();
@@ -83,7 +83,7 @@ const handleDeleteTeam = async (teamName) => {
   if (!window.confirm(`Are you sure you want to delete team "${teamName}" and all its bookings?`)) return;
 
   const encodedName = encodeURIComponent(teamName);
-  const url = `https://backendhisab.onrender.com/api/bookingData/${encodedName}`;
+  const url = `https://hisab-backend-hu8f.onrender.com/api/bookingData/${encodedName}`;
 
   try {
     await axios.delete(url);
@@ -128,7 +128,7 @@ const handleDeleteTeam = async (teamName) => {
     }
     try {
       const res = await axios.post(
-        "https://backendhisab.onrender.com/api/bookingData",
+        "https://hisab-backend-hu8f.onrender.com/api/bookingData",
         {
           teamName: newTeamName,
           bookings: [],
@@ -155,7 +155,7 @@ const handleDeleteTeam = async (teamName) => {
       await Promise.all(
         selectedTeams.map((teamName) =>
           axios.post(
-            `https://backendhisab.onrender.com/api/bookingData/${teamName}/bookings`,
+            `https://hisab-backend-hu8f.onrender.com/api/bookingData/${teamName}/bookings`,
             booking
           )
         )
