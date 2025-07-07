@@ -216,9 +216,7 @@ const monthProfit = getProfitForRange(oneMonthAgo, new Date());
           <span >Total Entry Fee: Rs {Math.round(grandTotals.entryFee)}</span>
           <span className="ml-[200px]">Total Winning: Rs {Math.round(grandTotals.winning)}</span>
             <span className="ml-[200px]">Total profit: Rs {Math.round(grandTotals.netTotal)}</span>
-         <p><strong>Today's Profit:</strong> Rs {todayProfit}</p>
-  <p><strong>Last 7 Days Profit:</strong> Rs {weekProfit}</p>
-   <p><strong>30 Days Profit:</strong> Rs {monthProfit}</p>
+     
         </div>
       </div>
 
