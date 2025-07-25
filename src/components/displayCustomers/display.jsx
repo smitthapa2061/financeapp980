@@ -24,48 +24,42 @@ export default function DisplayBookings({
 
   if (!teams) return <p>Loading teams...</p>;
 
-const lowerSearch = searchTerm.toLowerCase().trim();
+
 
 const filteredTeams = teams
-  .map(team => {
-    const matchTeamName = team.teamName?.toLowerCase().trim().includes(lowerSearch);
+  .map((team) => {
+    const lowerSearch = searchTerm.toLowerCase();
 
-    const matchedBookings = team.bookings?.filter(b => {
-      const matchDate = b.date?.toLowerCase().trim().includes(lowerSearch);
-      const matchCaster = b.caster?.toLowerCase().trim().includes(lowerSearch);
-      return matchDate || matchCaster;
-    }) || [];
+    const teamNameSafe = team.teamName?.toLowerCase() || "";
+    const matchTeamName = teamNameSafe.includes(lowerSearch);
 
-    const matchCaster = matchedBookings.some(b => b.caster?.toLowerCase().trim().includes(lowerSearch));
+  const matchedBookings = Array.isArray(team.bookings)
+  ? team.bookings.filter((b) => {
+      if (!b) return false;
+      const dateSafe = (b.date ? String(b.date).toLowerCase() : "");
+      const casterSafe = (b.caster ? String(b.caster).toLowerCase() : "");
+      return dateSafe.includes(lowerSearch) || casterSafe.includes(lowerSearch);
+    })
+  : [];
+
+    const matchCaster = matchedBookings.length > 0;
 
     if (matchTeamName || matchCaster) {
       return {
         ...team,
-        bookings: team.bookings, // show all bookings
-      };
-    }
-
-    if (matchedBookings.length > 0) {
-      return {
-        ...team,
-        bookings: matchedBookings, // show filtered bookings
+        bookings: team.bookings,
       };
     }
 
     return null;
   })
+  .filter((team) => team !== null)
+  .sort((a, b) => {
+    const totalA = a.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
+    const totalB = b.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
+    return totalA - totalB;
+  });
 
-
-
-
-
-
-  .filter(Boolean)
-   .sort((a, b) => {
-  const totalA = a.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
-  const totalB = b.bookings.reduce((sum, b) => sum + (b.entryFee || 0), 0);
-  return totalA - totalB; // Ascending order (lowest first)
-});
 
   const handleEditBookingClick = (teamName, booking, index) => {
     setEditingBooking({ teamName, index });
