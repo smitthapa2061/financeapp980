@@ -279,11 +279,9 @@ const DisplayBookings: React.FC<DisplayBookingsProps> = ({
     
     try {
       const canvas = await html2canvas(printRef.current, {
-        backgroundColor: '#ffffff',
-        scale: 2,
+        background: '#ffffff',
         useCORS: true,
-        logging: false,
-      });
+      } as unknown as Partial<Parameters<typeof html2canvas>[1]>);
       
       const link = document.createElement('a');
       link.download = `${teamName}_report_${new Date().toISOString().split('T')[0]}.jpg`;
